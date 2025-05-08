@@ -1,0 +1,44 @@
+{
+	"schemaVersion": 1,
+	"id": "never-hit-the-ground",
+	"version": "${version}",
+	"name": "Never Hit the Ground",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/never-hit-the-ground/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.neverhittheground.NeverHitTheGround"
+		],
+		"client": [
+			"com.neverhittheground.NeverHitTheGroundClient"
+		],
+		"fabric-datagen": [
+			"com.neverhittheground.NeverHitTheGroundDataGenerator"
+		]
+	},
+	"mixins": [
+		"never-hit-the-ground.mixins.json",
+		{
+			"config": "never-hit-the-ground.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.16.14",
+		"minecraft": "~1.20.4",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
