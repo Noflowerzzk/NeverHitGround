@@ -8,6 +8,10 @@ import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageType;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -17,6 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.World;
+import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +36,11 @@ public class NeverHitTheGround implements ModInitializer {
 	private static final Map<RegistryKey<World>, Map<ChunkPos, Set<BlockPos>>> placedBlocks = new HashMap<>();
 	private static final Map<UUID, Long> recentRespawns = new HashMap<>();
 	private static final Set<UUID> toNotify = new HashSet<>();
+
+	public static final Identifier STEPPED_ON_NATURAL_BLOCK_ID = new Identifier("never-hit-the-ground", "stepped_on_natural_block");
+
+	public static RegistryKey<DamageType> STEPPED_ON_NATURAL_BLOCK = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, STEPPED_ON_NATURAL_BLOCK_ID);
+
 
 	@Override
 	public void onInitialize() {
@@ -110,8 +120,13 @@ public class NeverHitTheGround implements ModInitializer {
 							&& !state.isOf(Blocks.END_PORTAL)
 							&& !state.isOf(Blocks.NETHER_PORTAL)
 							&& !placed.contains(below.toImmutable())) {
-						player.kill();
-//						LOGGER.info("Killed {} for stepping on non-placed block at {}", player.getName().getString(), below);
+//						player.kill();
+//						LOGGER.info("Killed {} for stepping on non-placed block at {}
+//						server.getPlayerManager().broadcast(
+//								Text.literal("666！" + state.getBlock().getName().getString() + " 磕到了 " + player.getName().getString() + " 的甲沟炎！").formatted(Formatting.RED, Formatting.BOLD),
+//								false
+//						);
+						player.damage(world.getDamageSources().create(NeverHitTheGround.STEPPED_ON_NATURAL_BLOCK), 99999f);
 					}
 				}
 			}
